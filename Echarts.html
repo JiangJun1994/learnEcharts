@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>echarts</title>
+    <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+
+</head>
+<body>
+    <div id="main" style="width:600px;height:400px;"></div>
+    <div id="main2" style="width:600px;height:400px;"></div>
+    <!--<script type="text/javascript" src="echart.js"></script>-->
+    <script>
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/bar' ,// 使用柱状图就加载bar模块，按需加载
+                'echarts/chart/line'
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main'));
+
+                var option = {
+                    backgroundColor:"gray",
+                    color:["blue","red"],
+                    title:{
+                        text:"sales",
+                        subtitle:"not true"
+                    },
+                    tooltip: {
+                            trigger: 'axis'
+                    },
+                    legend: {
+                       data:["最高气温","最低气温"]
+                    },
+                    toolbox: {
+                        show : true,
+                        feature : {
+                            mark : {show: true},
+                            dataView : {show: true, readOnly: false},
+                            magicType : {show: true, type: ['line', 'bar']},
+                            restore : {show: true},
+                            saveAsImage : {show: true}
+                        }
+                    },
+                    calculable : true,
+                    xAxis : [
+                        {
+                            type:"category",
+                            data:["1","2","3","4","5","6","7"]
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type:"value"
+                        }
+                    ],
+                    series : [
+                        {
+                            name:"最高气温",
+                            type:"line",
+                            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                            data:[10,13,15,15,16,17,17],
+                            markPoint:{
+                                data:[
+                                    {type:"max",name:"最大值"},
+                                    {type:"min",name:"最小值"}
+                                ]
+                            },
+                            markLine:{
+                                data:[
+                                    {type:"average",name:"平均值"}
+                                ]
+                            }
+                        },
+                        {
+                            name:"最低气温",
+                            type:"line",
+//                          stack: '总量',//堆积折线图
+//                          itemStyle: {normal: {areaStyle: {type: 'default'}}},//面积图要点
+                            data:[6,6,7,7,8,8,9],
+                            markPoint:{
+                                data:[
+                                    {type:"min",name:"最小值"},
+                                    {type:"max",name:"最大值"}
+                                ]
+                            },
+                            markLine:{
+                                data:[{
+                                    type:"average",name:"平均值"
+                                }]
+                            }
+                        }
+                    ]
+                };
+
+                // 为echarts对象加载数据
+                myChart.setOption(option);
+            }
+        );
+    </script>
+</body>
+</html>
